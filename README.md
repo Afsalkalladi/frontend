@@ -1,36 +1,195 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EESA Frontend Platform
 
-## Getting Started
+A modern, responsive web application for the Electrical and Electronics Students Association (EESA) built with Next.js 15, TypeScript, and Tailwind CSS. This platform serves students, teachers, alumni, and tech heads with role-based access to digital library, events, career opportunities, and project showcases.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **🔐 JWT Authentication** - Secure login with role-based access control
+- **📚 Digital Library** - Browse, search, and download study materials
+- **📅 Events & Workshops** - Discover and register for upcoming events
+- **💼 Career Board** - Explore job opportunities and internships
+- **🎯 Project Showcase** - Share and discover innovative projects
+- **📱 Responsive Design** - Optimized for all device sizes
+- **⚡ Fast Performance** - Built with Next.js 15 and Turbopack
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **State Management**: React Context API
+- **Forms**: React Hook Form + Zod validation
+- **HTTP Client**: Axios with automatic token refresh
+- **Icons**: Lucide React
+- **Notifications**: React Hot Toast
+- **Development**: Turbopack for fast builds
+
+## 🎭 User Roles
+
+- **👨‍🎓 Students**: Access library, events, career board, upload notes, create projects
+- **👨‍🏫 Teachers**: Student permissions + approve notes, create events
+- **🎓 Alumni**: Student permissions + post career opportunities
+- **⚡ Tech Heads**: Full admin access to all platform features
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, or pnpm
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd forntend
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Update `.env.local` with your configuration:
+
+   ```env
+   NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
+   NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+   JWT_SECRET=your-jwt-secret-key-here
+   NODE_ENV=development
+   ```
+
+4. **Start the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📝 Available Scripts
+
+- `npm run dev` - Start development server with Turbopack
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/                 # Next.js 15 App Router pages
+│   ├── about/          # About page
+│   ├── career/         # Career opportunities
+│   ├── events/         # Events & workshops
+│   ├── library/        # Digital library
+│   ├── login/          # Authentication
+│   └── page.tsx        # Home page
+├── components/         # Reusable React components
+│   ├── layout/         # Layout components (Navbar)
+│   └── ui/            # UI components (Button, Input)
+├── contexts/          # React Context providers
+├── hooks/             # Custom React hooks
+├── lib/               # Utility libraries (API client)
+├── types/             # TypeScript type definitions
+└── utils/             # Helper functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔑 Authentication
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The platform uses JWT-based authentication with automatic token refresh. Demo credentials are available on the login page:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Student**: student@eesa.com / password123
+- **Teacher**: teacher@eesa.com / password123
+- **Alumni**: alumni@eesa.com / password123
+- **Tech Head**: tech@eesa.com / password123
 
-## Learn More
+## 🎨 Design System
 
-To learn more about Next.js, take a look at the following resources:
+- **Primary Color**: Blue (#2563EB)
+- **Typography**: Geist Sans & Geist Mono
+- **Spacing**: Tailwind CSS spacing scale
+- **Components**: Custom UI components with consistent styling
+- **Icons**: Lucide React icon library
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Vercel (Recommended)
 
-## Deploy on Vercel
+1. **Connect your repository to Vercel**
+2. **Set environment variables** in Vercel dashboard
+3. **Deploy automatically** on every push to main branch
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Manual Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm start
+```
+
+## 🔄 API Integration
+
+The frontend is designed to integrate with a Django REST API backend. Currently uses mock data for development. API endpoints include:
+
+- `POST /auth/login/` - User authentication
+- `POST /auth/refresh/` - Token refresh
+- `GET /auth/user/` - User profile
+- `GET /notes/` - Library materials
+- `GET /events/` - Events listing
+- `GET /career/` - Career opportunities
+
+## 🛡️ Security Features
+
+- JWT token storage in secure HTTP-only cookies
+- Automatic token refresh
+- Role-based route protection
+- CSRF protection
+- Environment-based configuration
+
+## 📱 Responsive Design
+
+- Mobile-first approach
+- Breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px)
+- Touch-friendly interfaces
+- Optimized for all screen sizes
+
+## 🔮 Future Enhancements
+
+- [ ] Notes upload and verification system
+- [ ] Project creation and management
+- [ ] User registration flow
+- [ ] File upload capabilities
+- [ ] Real-time notifications
+- [ ] Advanced search and filtering
+- [ ] User profiles and settings
+- [ ] Dark mode support
+
+## 🤝 Contributing
+
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+4. **Push to the branch** (`git push origin feature/amazing-feature`)
+5. **Open a Pull Request**
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support, email contact@eesa.edu or join our community Discord server.
+
+---
+
+**Built with ❤️ by the EESA Development Team**
