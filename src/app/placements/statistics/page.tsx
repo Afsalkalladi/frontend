@@ -44,19 +44,23 @@ const PlacementStatisticsPage = () => {
     try {
       setError(null);
       setLoading(true);
-      
+
       console.log("Fetching statistics...");
-      
+
       const [statsResponse, placedResponse] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/placements/statistics/`),
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/placements/placed-students/`)
+        fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/placements/placed-students/`
+        ),
       ]);
 
       console.log("Stats response:", statsResponse.status);
       console.log("Placed response:", placedResponse.status);
 
       if (!statsResponse.ok || !placedResponse.ok) {
-        throw new Error(`Failed to fetch data: ${statsResponse.status}, ${placedResponse.status}`);
+        throw new Error(
+          `Failed to fetch data: ${statsResponse.status}, ${placedResponse.status}`
+        );
       }
 
       const statsData = await statsResponse.json();
@@ -71,7 +75,11 @@ const PlacementStatisticsPage = () => {
         statsArray = statsData;
       } else if (statsData && Array.isArray(statsData.results)) {
         statsArray = statsData.results;
-      } else if (statsData && statsData.statistics && Array.isArray(statsData.statistics)) {
+      } else if (
+        statsData &&
+        statsData.statistics &&
+        Array.isArray(statsData.statistics)
+      ) {
         statsArray = statsData.statistics;
       }
 
@@ -81,7 +89,11 @@ const PlacementStatisticsPage = () => {
         placedArray = placedData;
       } else if (placedData && Array.isArray(placedData.results)) {
         placedArray = placedData.results;
-      } else if (placedData && placedData.placed_students && Array.isArray(placedData.placed_students)) {
+      } else if (
+        placedData &&
+        placedData.placed_students &&
+        Array.isArray(placedData.placed_students)
+      ) {
         placedArray = placedData.placed_students;
       }
 
@@ -90,10 +102,12 @@ const PlacementStatisticsPage = () => {
 
       setStats(statsArray);
       setRecentPlacements(placedArray.slice(0, 10));
-      
+
       // Auto-select the first available year if not already selected
       if (statsArray.length > 0 && !selectedYear) {
-        const availableYears = [...new Set(statsArray.map((stat) => stat.academic_year))]
+        const availableYears = [
+          ...new Set(statsArray.map((stat) => stat.academic_year)),
+        ]
           .sort()
           .reverse();
         if (availableYears.length > 0) {
@@ -111,8 +125,11 @@ const PlacementStatisticsPage = () => {
 
   const getCurrentYearStats = () => {
     if (!Array.isArray(stats) || stats.length === 0) return null;
-    const yearToUse = selectedYear || (stats.length > 0 ? stats[0].academic_year : "");
-    return stats.find((stat) => stat.academic_year === yearToUse) || stats[0] || null;
+    const yearToUse =
+      selectedYear || (stats.length > 0 ? stats[0].academic_year : "");
+    return (
+      stats.find((stat) => stat.academic_year === yearToUse) || stats[0] || null
+    );
   };
 
   const getAvailableYears = () => {
@@ -207,10 +224,10 @@ const PlacementStatisticsPage = () => {
         <div className="mb-4 p-4 bg-yellow-50 rounded-lg">
           <h3 className="font-medium text-yellow-800 mb-2">Debug Info:</h3>
           <p className="text-sm text-yellow-700">
-            Stats count: {stats.length} | 
-            Selected year: {selectedYear || "None"} | 
-            Available years: {availableYears.join(", ") || "None"} | 
-            Current stats: {currentStats ? "Found" : "Not found"}
+            Stats count: {stats.length} | Selected year:{" "}
+            {selectedYear || "None"} | Available years:{" "}
+            {availableYears.join(", ") || "None"} | Current stats:{" "}
+            {currentStats ? "Found" : "Not found"}
           </p>
         </div>
 
@@ -244,7 +261,8 @@ const PlacementStatisticsPage = () => {
                 {currentStats.total_placed || 0}
               </div>
               <div className="text-sm text-green-600 font-medium">
-                {(currentStats.placement_percentage || 0).toFixed(1)}% placement rate
+                {(currentStats.placement_percentage || 0).toFixed(1)}% placement
+                rate
               </div>
             </div>
 
@@ -258,10 +276,18 @@ const PlacementStatisticsPage = () => {
                 </span>
               </div>
               <div className="text-3xl font-bold text-gray-900">
-                ₹{parseFloat(String(currentStats.highest_package || 0)).toFixed(2)} LPA
+                ₹
+                {parseFloat(String(currentStats.highest_package || 0)).toFixed(
+                  2
+                )}{" "}
+                LPA
               </div>
               <div className="text-sm text-gray-600">
-                Average: ₹{parseFloat(String(currentStats.average_package || 0)).toFixed(2)} LPA
+                Average: ₹
+                {parseFloat(String(currentStats.average_package || 0)).toFixed(
+                  2
+                )}{" "}
+                LPA
               </div>
             </div>
 
@@ -291,8 +317,10 @@ const PlacementStatisticsPage = () => {
               No Placement Statistics Available
             </h3>
             <p className="text-gray-600">
-              {availableYears.length > 0 
-                ? `No statistics found for ${selectedYear || "the selected year"}`
+              {availableYears.length > 0
+                ? `No statistics found for ${
+                    selectedYear || "the selected year"
+                  }`
                 : "No placement statistics have been created yet"}
             </p>
           </div>
@@ -352,7 +380,8 @@ const PlacementStatisticsPage = () => {
                         {student.job_title}
                       </td>
                       <td className="py-3 px-4 font-medium text-green-600">
-                        ₹{parseFloat(String(student.package_lpa)).toFixed(2)} LPA
+                        ₹{parseFloat(String(student.package_lpa)).toFixed(2)}{" "}
+                        LPA
                       </td>
                       <td className="py-3 px-4 text-gray-700">
                         {student.work_location}

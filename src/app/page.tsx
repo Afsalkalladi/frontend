@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { BookOpen, Calendar, Briefcase, Users, MapPin, Clock } from "lucide-react";
+import {
+  BookOpen,
+  Calendar,
+  Briefcase,
+  Users,
+  MapPin,
+  Clock,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Event {
@@ -40,7 +47,11 @@ export default function Home() {
             .slice(0, 6);
           setEvents(upcomingEvents);
         } else {
-          console.error('Failed to fetch events:', response.status, response.statusText);
+          console.error(
+            "Failed to fetch events:",
+            response.status,
+            response.statusText
+          );
         }
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -209,7 +220,8 @@ export default function Home() {
               Upcoming Events
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Join us for workshops, seminars, and competitions designed to enhance your skills and knowledge.
+              Join us for workshops, seminars, and competitions designed to
+              enhance your skills and knowledge.
             </p>
           </div>
 
@@ -220,7 +232,10 @@ export default function Home() {
           ) : events.length > 0 ? (
             <div className="relative">
               <div className="overflow-x-auto">
-                <div className="flex space-x-6 pb-4" style={{ width: 'max-content' }}>
+                <div
+                  className="flex space-x-6 pb-4"
+                  style={{ width: "max-content" }}
+                >
                   {events.map((event) => (
                     <div
                       key={event.id}
@@ -255,7 +270,8 @@ export default function Home() {
                           <div className="flex items-center text-sm text-gray-500">
                             <Clock className="w-4 h-4 mr-2" />
                             <span>
-                              {formatTime(event.start_date)} - {formatTime(event.end_date)}
+                              {formatTime(event.start_date)} -{" "}
+                              {formatTime(event.end_date)}
                             </span>
                           </div>
 
@@ -268,7 +284,8 @@ export default function Home() {
                             <div className="flex items-center text-sm text-gray-500">
                               <Users className="w-4 h-4 mr-2" />
                               <span>
-                                {event.registration_count || 0} / {event.max_participants} participants
+                                {event.registration_count || 0} /{" "}
+                                {event.max_participants} participants
                               </span>
                             </div>
                           )}
@@ -286,7 +303,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              
+
               <div className="text-center mt-8">
                 <Link href="/events">
                   <Button size="lg" className="bg-blue-600 hover:bg-blue-700">

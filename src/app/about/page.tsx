@@ -47,16 +47,22 @@ export default function AboutPage() {
 
       // Handle paginated response format
       const allMembers = data.results || data || [];
-      
+
       // Separate team members by type
       setEesaTeam(
         allMembers
-          .filter((member: TeamMember) => member.team_type === "eesa" && member.is_active)
+          .filter(
+            (member: TeamMember) =>
+              member.team_type === "eesa" && member.is_active
+          )
           .sort((a: TeamMember, b: TeamMember) => a.order - b.order)
       );
       setTechTeam(
         allMembers
-          .filter((member: TeamMember) => member.team_type === "tech" && member.is_active)
+          .filter(
+            (member: TeamMember) =>
+              member.team_type === "tech" && member.is_active
+          )
           .sort((a: TeamMember, b: TeamMember) => a.order - b.order)
       );
     } catch (error) {
@@ -245,9 +251,7 @@ export default function AboutPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              EESA Team
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">EESA Team</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Meet our dedicated EESA team members who lead our organization.
             </p>
@@ -262,7 +266,9 @@ export default function AboutPage() {
           ) : (
             <div className="text-center py-12">
               <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">EESA team information will be updated soon.</p>
+              <p className="text-gray-500">
+                EESA team information will be updated soon.
+              </p>
             </div>
           )}
         </div>
@@ -272,11 +278,10 @@ export default function AboutPage() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Tech Team
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Tech Team</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              The brilliant minds behind our digital platform and technical initiatives.
+              The brilliant minds behind our digital platform and technical
+              initiatives.
             </p>
           </div>
 
@@ -289,7 +294,9 @@ export default function AboutPage() {
           ) : (
             <div className="text-center py-12">
               <Code className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">Tech team information will be updated soon.</p>
+              <p className="text-gray-500">
+                Tech team information will be updated soon.
+              </p>
             </div>
           )}
         </div>
@@ -302,7 +309,8 @@ export default function AboutPage() {
             Get in Touch
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Have questions or want to connect with us? We&apos;d love to hear from you.
+            Have questions or want to connect with us? We&apos;d love to hear
+            from you.
           </p>
           <div className="flex justify-center">
             <a

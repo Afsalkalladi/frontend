@@ -208,7 +208,9 @@ const CompaniesPage = () => {
                   )}
                 </div>
 
-                {(company.contact_person || company.contact_email || company.contact_phone) && (
+                {(company.contact_person ||
+                  company.contact_email ||
+                  company.contact_phone) && (
                   <div className="border-t pt-4">
                     <h4 className="text-sm font-medium text-gray-900 mb-2">
                       Contact Information

@@ -111,16 +111,18 @@ export default function EventsPage() {
 
     try {
       setRegistering(true);
-      
+
       // Convert guest form data to the format expected by backend
       const registrationData = {
         name: guestFormData.guest_name,
         email: guestFormData.guest_email,
         mobile_number: guestFormData.guest_phone || "",
         department: guestFormData.guest_department || "",
-        year_of_study: guestFormData.guest_semester ? guestFormData.guest_semester.toString() : "",
+        year_of_study: guestFormData.guest_semester
+          ? guestFormData.guest_semester.toString()
+          : "",
       };
-      
+
       const response = await fetch(
         `${API_BASE_URL}/events/events/${registrationModal.event.id}/register/`,
         {
