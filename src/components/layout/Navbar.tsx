@@ -14,6 +14,7 @@ import {
   GraduationCap,
   Users,
   Building2,
+  Info,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -29,6 +30,7 @@ const Navbar = () => {
     { name: "Career", href: "/career", icon: Building2 },
     { name: "Alumni", href: "/alumni", icon: Users },
     { name: "Gallery", href: "/gallery", icon: Image },
+    { name: "About Us", href: "/about", icon: Info },
   ];
 
   const isActive = (href: string) => {

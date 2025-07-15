@@ -87,10 +87,10 @@ const AlumniManagement = () => {
 
   const filteredAlumni = alumni.filter((alumnus) => {
     const matchesSearch =
-      alumnus.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      alumnus.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      alumnus.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      alumnus.username.toLowerCase().includes(searchTerm.toLowerCase());
+      alumnus.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      alumnus.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      alumnus.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      alumnus.username?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesFilter =
       filterStatus === "all" ||

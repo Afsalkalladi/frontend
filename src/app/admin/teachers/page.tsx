@@ -110,10 +110,10 @@ const TeachersManagement = () => {
 
   const filteredTeachers = teachers.filter((teacher) => {
     const matchesSearch =
-      teacher.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      teacher.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      teacher.username.toLowerCase().includes(searchTerm.toLowerCase());
+      teacher.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      teacher.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      teacher.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      teacher.username?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesFilter =
       filterStatus === "all" ||

@@ -226,16 +226,16 @@ const AcademicsManagement = () => {
   const currentNotes = view === "pending" ? pendingNotes : allNotes;
   const filteredNotes = currentNotes.filter((note) => {
     const matchesSearch =
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.subject_details.name
-        .toLowerCase()
+      note.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.subject_details?.name
+        ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      note.uploaded_by.first_name
-        .toLowerCase()
+      note.uploaded_by?.first_name
+        ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      note.uploaded_by.last_name
-        .toLowerCase()
+      note.uploaded_by?.last_name
+        ?.toLowerCase()
         .includes(searchTerm.toLowerCase());
 
     const matchesType = filterType === "all" || note.note_type === filterType;

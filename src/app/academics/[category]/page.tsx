@@ -57,7 +57,7 @@ export default function CategoryPage() {
   // Get category type from slug
   const getCategoryType = (slug: string) => {
     if (slug === "notes") return "notes";
-    if (slug === "textbooks") return "textbook";
+    if (slug === "textbook" || slug === "textbooks") return "textbook";
     if (slug === "pyq") return "pyq";
     return slug;
   };
@@ -70,7 +70,7 @@ export default function CategoryPage() {
         icon: BookOpen,
         color: "from-blue-500 to-cyan-500",
       },
-      textbooks: {
+      textbook: {
         name: "Textbooks",
         description: "Reference books and study materials",
         icon: BookOpen,
@@ -188,8 +188,8 @@ export default function CategoryPage() {
 
   const filteredResources = resources.filter((resource) => {
     const matchesSearch =
-      resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      resource.description.toLowerCase().includes(searchTerm.toLowerCase());
+      resource.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      resource.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesModule = !selectedModule || resource.module === selectedModule;
     const matchesSemester =
       !selectedSemester || resource.semester.toString() === selectedSemester;

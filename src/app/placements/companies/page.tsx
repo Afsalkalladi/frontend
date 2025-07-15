@@ -15,18 +15,20 @@ import {
 interface Company {
   id: number;
   name: string;
+  description: string;
+  website: string;
+  logo?: string;
   industry: string;
   location: string;
-  website: string;
-  description: string;
-  logo?: string;
+  company_size: string;
   contact_person: string;
   contact_email: string;
   contact_phone: string;
-  company_size?: string;
-  is_verified: boolean;
   is_active: boolean;
+  is_verified: boolean;
   created_at: string;
+  updated_at: string;
+  created_by: null;
 }
 
 const CompaniesPage = () => {
@@ -45,15 +47,23 @@ const CompaniesPage = () => {
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/placements/companies/`
       );
       const data = await response.json();
-      setCompanies(data.results || data || []);
+
+      // The API returns {companies: [...], count: ...}
+      const companiesData = data.companies || [];
+      setCompanies(Array.isArray(companiesData) ? companiesData : []);
     } catch (error) {
       console.error("Error fetching companies:", error);
+      // Set empty array on error
+      setCompanies([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredCompanies = companies.filter((company) => {
+  // Add safety check to ensure companies is always an array
+  const companiesArray = Array.isArray(companies) ? companies : [];
+
+  const filteredCompanies = companiesArray.filter((company) => {
     const matchesSearch =
       company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       company.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,7 +75,9 @@ const CompaniesPage = () => {
     return matchesSearch && matchesIndustry && company.is_active;
   });
 
-  const industries = [...new Set(companies.map((company) => company.industry))];
+  const industries = [
+    ...new Set(companiesArray.map((company) => company.industry)),
+  ];
 
   if (loading) {
     return (
@@ -196,35 +208,43 @@ const CompaniesPage = () => {
                   )}
                 </div>
 
-                <div className="border-t pt-4">
-                  <h4 className="text-sm font-medium text-gray-900 mb-2">
-                    Contact Information
-                  </h4>
-                  <div className="space-y-1">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <span className="font-medium mr-2">Contact:</span>
-                      {company.contact_person}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Mail className="w-4 h-4 mr-2" />
-                      <a
-                        href={`mailto:${company.contact_email}`}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {company.contact_email}
-                      </a>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Phone className="w-4 h-4 mr-2" />
-                      <a
-                        href={`tel:${company.contact_phone}`}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {company.contact_phone}
-                      </a>
+                {(company.contact_person || company.contact_email || company.contact_phone) && (
+                  <div className="border-t pt-4">
+                    <h4 className="text-sm font-medium text-gray-900 mb-2">
+                      Contact Information
+                    </h4>
+                    <div className="space-y-1">
+                      {company.contact_person && (
+                        <div className="flex items-center text-sm text-gray-600">
+                          <span className="font-medium mr-2">Contact:</span>
+                          {company.contact_person}
+                        </div>
+                      )}
+                      {company.contact_email && (
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Mail className="w-4 h-4 mr-2" />
+                          <a
+                            href={`mailto:${company.contact_email}`}
+                            className="text-blue-600 hover:underline"
+                          >
+                            {company.contact_email}
+                          </a>
+                        </div>
+                      )}
+                      {company.contact_phone && (
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Phone className="w-4 h-4 mr-2" />
+                          <a
+                            href={`tel:${company.contact_phone}`}
+                            className="text-blue-600 hover:underline"
+                          >
+                            {company.contact_phone}
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           ))}

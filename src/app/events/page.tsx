@@ -318,7 +318,7 @@ export default function EventsPage() {
                       <div className="flex items-center text-sm text-gray-500">
                         <Users className="w-4 h-4 mr-2" />
                         <span>
-                          {event.current_participants || 0} /{" "}
+                          {event.registration_count || 0} /{" "}
                           {event.max_participants} participants
                         </span>
                       </div>
@@ -331,14 +331,14 @@ export default function EventsPage() {
                       disabled={
                         registering ||
                         (event.max_participants &&
-                          (event.current_participants || 0) >=
+                          (event.registration_count || 0) >=
                             event.max_participants) ||
                         new Date(event.end_date) < new Date()
                       }
                       className="w-full"
                       variant={
                         event.max_participants &&
-                        (event.current_participants || 0) >=
+                        (event.registration_count || 0) >=
                           event.max_participants
                           ? "secondary"
                           : "default"
@@ -346,8 +346,7 @@ export default function EventsPage() {
                     >
                       <UserPlus className="w-4 h-4 mr-2" />
                       {event.max_participants &&
-                      (event.current_participants || 0) >=
-                        event.max_participants
+                      (event.registration_count || 0) >= event.max_participants
                         ? "Full"
                         : new Date(event.end_date) < new Date()
                         ? "Event Ended"

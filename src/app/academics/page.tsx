@@ -75,7 +75,18 @@ const AcademicsPage = () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/academics/resources/`
       );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('API Response:', data);
+      
+      if (!Array.isArray(data)) {
+        console.error('API response is not an array:', data);
+        return;
+      }
 
       // Filter featured resources
       const featured = data.filter(
@@ -86,17 +97,18 @@ const AcademicsPage = () => {
       // Calculate category counts
       const notesCount = data.filter(
         (resource: AcademicResource) =>
-          resource.category.toLowerCase() === "notes"
+          resource.category === "notes"
       ).length;
       const textbookCount = data.filter(
         (resource: AcademicResource) =>
-          resource.category.toLowerCase() === "textbook"
+          resource.category === "textbook"
       ).length;
       const pyqCount = data.filter(
         (resource: AcademicResource) =>
-          resource.category.toLowerCase() === "pyq" ||
-          resource.category.toLowerCase() === "previous year questions"
+          resource.category === "pyq"
       ).length;
+
+      console.log('Category counts:', { notesCount, textbookCount, pyqCount });
 
       setCategoryStats({
         notes: notesCount,
@@ -111,7 +123,7 @@ const AcademicsPage = () => {
   };
 
   const filteredCategories = academicCategories.filter(
-    (category) => activeCategory === "all" || category.type === activeCategory
+    (category) => category && (activeCategory === "all" || category.type === activeCategory)
   );
 
   if (loading) {
@@ -190,6 +202,8 @@ const AcademicsPage = () => {
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {filteredCategories.map((category) => {
+            if (!category) return null;
+            
             const IconComponent = category.icon;
             return (
               <Link
@@ -202,7 +216,7 @@ const AcademicsPage = () => {
                 >
                   <div className="flex items-center justify-between mb-4">
                     <IconComponent className="w-8 h-8" />
-                    <span className="text-2xl font-bold">{category.count}</span>
+                    <span className="text-2xl font-bold">{category.count || 0}</span>
                   </div>
                   <h3 className="text-xl font-semibold mb-2">
                     {category.title}
@@ -259,18 +273,58 @@ const AcademicsPage = () => {
                       {new Date(resource.created_at).toLocaleDateString()}
                     </span>
                   </div>
-                  <button
-                    onClick={() => {
-                      // Use the download API endpoint
-                      const downloadUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/academics/resources/${resource.id}/download/`;
-
-                      // Open download URL in new tab
-                      window.open(downloadUrl, "_blank");
-                    }}
-                    className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Download
-                  </button>
+                  {resource.file && (
+                    <button
+                      onClick={async () => {
+                        try {
+                          // Use the download API endpoint
+                          const downloadUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/academics/resources/${resource.id}/download/`;
+                          
+                          // Try to fetch the file and trigger download
+                          const response = await fetch(downloadUrl, {
+                            method: 'GET',
+                            headers: {
+                              'Accept': 'application/octet-stream',
+                            }
+                          });
+                          
+                          if (response.ok) {
+                            const blob = await response.blob();
+                            const url = window.URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            
+                            // Extract filename from Content-Disposition header or use title
+                            const contentDisposition = response.headers.get('Content-Disposition');
+                            let filename = resource.title || 'download';
+                            
+                            if (contentDisposition) {
+                              const matches = contentDisposition.match(/filename="([^"]+)"/);
+                              if (matches) {
+                                filename = matches[1];
+                              }
+                            }
+                            
+                            link.download = filename;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            window.URL.revokeObjectURL(url);
+                          } else {
+                            throw new Error(`Download failed: ${response.status}`);
+                          }
+                        } catch (error) {
+                          console.error('Download failed:', error);
+                          // Fallback to direct link
+                          const downloadUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/academics/resources/${resource.id}/download/`;
+                          window.open(downloadUrl, '_blank');
+                        }
+                      }}
+                      className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                      Download
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

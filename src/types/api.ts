@@ -139,29 +139,27 @@ export interface Event {
   title: string;
   description: string;
   event_type: 'workshop' | 'seminar' | 'competition' | 'social' | 'other';
+  status: string;
   start_date: string;
   end_date: string;
   location: string;
+  venue?: string;
   registration_required: boolean;
   registration_deadline?: string;
   max_participants?: number;
-  current_participants: number;
-  created_by: {
-    id: string;
-    username: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    role: string;
-  };
-  is_active: boolean;
+  registration_count: number;
+  registration_fee: string;
+  banner_image?: string;
+  created_by_name: string;
+  is_active?: boolean;
   is_featured: boolean;
   is_upcoming: boolean;
-  is_past: boolean;
-  is_ongoing: boolean;
-  registration_open: boolean;
+  is_past?: boolean;
+  is_ongoing?: boolean;
+  is_registration_open: boolean;
+  spots_remaining: number;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface EventCreate {

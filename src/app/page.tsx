@@ -1,10 +1,75 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Calendar, Briefcase, Users } from "lucide-react";
+import { useState, useEffect } from "react";
+import { BookOpen, Calendar, Briefcase, Users, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+interface Event {
+  id: number;
+  title: string;
+  description: string;
+  event_type: string;
+  start_date: string;
+  end_date: string;
+  location: string;
+  registration_required: boolean;
+  max_participants: number;
+  is_upcoming: boolean;
+  is_registration_open: boolean;
+  registration_count: number;
+  spots_remaining: number;
+}
+
 export default function Home() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/events/`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const eventsArray = data.results || [];
+          // Get only upcoming events, limit to 6
+          const upcomingEvents = eventsArray
+            .filter((event: Event) => event.is_upcoming)
+            .slice(0, 6);
+          setEvents(upcomingEvents);
+        } else {
+          console.error('Failed to fetch events:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
   const features = [
     {
       icon: BookOpen,
@@ -133,6 +198,114 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Upcoming Events Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Upcoming Events
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Join us for workshops, seminars, and competitions designed to enhance your skills and knowledge.
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            </div>
+          ) : events.length > 0 ? (
+            <div className="relative">
+              <div className="overflow-x-auto">
+                <div className="flex space-x-6 pb-4" style={{ width: 'max-content' }}>
+                  {events.map((event) => (
+                    <div
+                      key={event.id}
+                      className="bg-white rounded-lg shadow-lg border hover:shadow-xl transition-shadow flex-shrink-0 w-80"
+                    >
+                      <div className="p-6">
+                        <div className="flex items-start justify-between mb-4">
+                          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+                            {event.title}
+                          </h3>
+                          {event.registration_required && (
+                            <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              Registration Required
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                          {event.description}
+                        </p>
+
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Calendar className="w-4 h-4 mr-2" />
+                            <span>
+                              {formatDate(event.start_date)}
+                              {event.start_date !== event.end_date &&
+                                ` - ${formatDate(event.end_date)}`}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Clock className="w-4 h-4 mr-2" />
+                            <span>
+                              {formatTime(event.start_date)} - {formatTime(event.end_date)}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center text-sm text-gray-500">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            <span>{event.location}</span>
+                          </div>
+
+                          {event.max_participants && (
+                            <div className="flex items-center text-sm text-gray-500">
+                              <Users className="w-4 h-4 mr-2" />
+                              <span>
+                                {event.registration_count || 0} / {event.max_participants} participants
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="pt-4 border-t">
+                          <Link href="/events">
+                            <Button className="w-full" variant="outline">
+                              View Details
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="text-center mt-8">
+                <Link href="/events">
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                    View All Events
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-gray-900 mb-2">
+                No upcoming events
+              </h3>
+              <p className="text-gray-600">
+                Check back later for new events and workshops.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
