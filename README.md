@@ -1,23 +1,26 @@
 # EESA Frontend Platform
 
-A modern, responsive web application for the Electrical and Electronics Students Association (EESA) built with Next.js 15, TypeScript, and Tailwind CSS. This platform serves students, teachers, alumni, and tech heads with role-based access to digital library, events, career opportunities, and project showcases.
+A modern, production-ready web application for the Electronics Engineering Student Association (EESA) built with Next.js 15, TypeScript, and Tailwind CSS. This platform serves students, faculty, and staff with comprehensive academic resource management and event coordination.
 
-## 🚀 Features
+## 🚀 Production Features
 
-- **🔐 JWT Authentication** - Secure login with role-based access control
-- **📚 Digital Library** - Browse, search, and download study materials
-- **📅 Events & Workshops** - Discover and register for upcoming events
-- **💼 Career Board** - Explore job opportunities and internships
-- **🎯 Project Showcase** - Share and discover innovative projects
-- **📱 Responsive Design** - Optimized for all device sizes
-- **⚡ Fast Performance** - Built with Next.js 15 and Turbopack
+- **🔐 Secure Authentication** - JWT-based auth with role-based access control
+- **📚 Academic Resources** - Digital library with notes, textbooks, and PYQs
+- **📅 Event Management** - Campus events and registration system
+- **💼 Career Portal** - Job placements and career opportunities
+- **🎯 Project Showcase** - Student and faculty project displays
+- **📱 Responsive Design** - Mobile-first, optimized for all devices
+- **⚡ Performance Optimized** - Built with Next.js 15 and modern tooling
+- **🔒 Security Hardened** - XSS protection, input validation, secure file handling
 
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 15 with App Router
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **State Management**: React Context API
+- **Styling**: Tailwind CSS
+- **State Management**: React Query + Context API
+- **Authentication**: JWT tokens
+- **Forms**: React Hook Form + Zod validation
 - **Forms**: React Hook Form + Zod validation
 - **HTTP Client**: Axios with automatic token refresh
 - **Icons**: Lucide React

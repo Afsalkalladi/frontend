@@ -3,7 +3,7 @@ import { ApiResponse, ApiError } from '@/types/common';
 import toast from 'react-hot-toast';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
-const DJANGO_ADMIN_URL = process.env.NEXT_PUBLIC_DJANGO_ADMIN_URL || 'http://localhost:8000/admin';
+const DJANGO_ADMIN_URL = process.env.NEXT_PUBLIC_DJANGO_ADMIN_URL || 'http://localhost:8000/eesa';
 
 // Create axios instance for public API calls
 const apiClient = axios.create({
@@ -11,6 +11,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 second timeout
 });
 
 // Response interceptor to handle errors
@@ -21,6 +22,8 @@ apiClient.interceptors.response.use(
       console.warn('API endpoint not found:', error.config?.url);
     } else if (error.response?.status >= 500) {
       toast.error('Server error. Please try again later.');
+    } else if (error.code === 'ECONNABORTED') {
+      toast.error('Request timeout. Please try again.');
     }
     return Promise.reject(error);
   }

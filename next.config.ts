@@ -8,12 +8,24 @@ const nextConfig: NextConfig = {
     ],
     remotePatterns: [
       {
+        protocol: 'https',
+        hostname: 'your-backend-domain.com',
+        pathname: '/media/**',
+      },
+      // Keep localhost for development
+      {
         protocol: 'http',
         hostname: 'localhost',
-        port: '8001',
+        port: '8000',
         pathname: '/media/**',
       },
     ],
+  },
+  output: 'standalone',
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
   },
 };
 
