@@ -4,14 +4,12 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { apiRequest } from "@/lib/api";
+import ResourceCard from "@/components/ui/ResourceCard";
 import {
   BookOpen,
-  Download,
   Search,
   FileText,
-  User,
   ChevronLeft,
-  Star,
 } from "lucide-react";
 
 interface AcademicResource {
@@ -169,22 +167,6 @@ export default function CategoryPage() {
 
     fetchData();
   }, [categorySlug]);
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   const filteredResources = resources.filter((resource) => {
     const matchesSearch =
@@ -347,66 +329,11 @@ export default function CategoryPage() {
         {/* Resources Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredResources.map((resource) => (
-            <div
+            <ResourceCard
               key={resource.id}
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    {resource.is_featured && (
-                      <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                    )}
-                    <h3 className="font-semibold text-gray-800 line-clamp-2">
-                      {resource.title}
-                    </h3>
-                  </div>
-                  <p className="text-gray-600 text-sm line-clamp-2 mb-3">
-                    {resource.description}
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <span>Module: {resource.module}</span>
-                  <span>Sem {resource.semester}</span>
-                </div>
-
-                {category.category_type === "pyq" && (
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Exam: {resource.exam_type}</span>
-                    <span>Year: {resource.year}</span>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <span>{formatFileSize(resource.file_size)}</span>
-                  <span>{resource.scheme} Scheme</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-4 text-xs text-gray-400">
-                  <span className="flex items-center gap-1">
-                    <Download className="h-3 w-3" />
-                    {resource.download_count}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <User className="h-3 w-3" />
-                    {resource.uploaded_by}
-                  </span>
-                </div>
-                <span className="text-xs text-gray-400">
-                  {formatDate(resource.uploaded_at)}
-                </span>
-              </div>
-
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-                <Download className="h-4 w-4" />
-                Download
-              </button>
-            </div>
+              resource={resource}
+              categoryType={category?.category_type || categorySlug}
+            />
           ))}
         </div>
 

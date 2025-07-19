@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     domains: [
       'ui-avatars.com',
       'via.placeholder.com',
+      'res.cloudinary.com', // Add Cloudinary domain
     ],
     remotePatterns: [
       {
@@ -18,6 +19,12 @@ const nextConfig: NextConfig = {
         hostname: 'localhost',
         port: '8000',
         pathname: '/media/**',
+      },
+      // Add Cloudinary patterns
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
       },
     ],
   },
