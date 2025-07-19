@@ -28,10 +28,6 @@ Update your `.env.local` file with your Cloudinary credentials:
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
 NEXT_PUBLIC_DJANGO_ADMIN_URL=http://localhost:8000/eesa
 
-# Cloudinary Configuration
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-actual-cloud-name
-NEXT_PUBLIC_CLOUDINARY_API_KEY=your-actual-api-key
-CLOUDINARY_API_SECRET=your-actual-api-secret
 ```
 
 ### For Production (Vercel Environment Variables)
